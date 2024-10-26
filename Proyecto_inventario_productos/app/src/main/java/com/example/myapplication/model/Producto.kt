@@ -13,7 +13,7 @@ data class Producto (
 
     @SerialName("id"          )
     @PrimaryKey
-    var id          : Long    = 0,
+    var id          : Int    = 0,
     @SerialName("title"       ) var title       : String? = null,
     @SerialName("price"       ) var price       : Double? = null,
     @SerialName("description" ) var description : String? = null,
