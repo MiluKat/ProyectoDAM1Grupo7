@@ -20,6 +20,9 @@ interface ProductoDAO {
     @Query("SELECT * FROM producto_table WHERE title LIKE :cadena")
     suspend fun buscarProductos(cadena : String) : List<Producto>
 
+    @Query("SELECT * FROM producto_table WHERE id LIKE :prodId")
+    suspend fun buscarProductosPorId(prodId : Int) : Producto
+
     @Delete
     suspend fun delete(producto: Producto) : Unit
 
