@@ -34,15 +34,17 @@ class VerProducto : AppCompatActivity() {
         database = DatabaseFinal.getDatabase(this)
         productoDAO = database.productoDAO()
         var productId: Int = intent.getIntExtra("productoId", 0)
-        var producto : Producto? = findProduct(productId)
-        if(producto?.id == null){
-            Picasso.get().load(producto?.image).into(binding.imgProd)
-            binding.txvNombre.text = producto?.title.toString()
-            binding.txvCategoria.text = producto?.category.toString()
-            binding.txvPrecio.text = producto?.price.toString()
-            binding.txvDescripcion.text = producto?.description.toString()
+        findProduct(productId) { producto ->
+            if (producto != null) {
+                Picasso.get().load(producto.image).into(binding.imgProd)
+                binding.txvNombre.text = producto.title
+                binding.txvCategoria.text = producto.category
+                binding.txvPrecio.text = producto.price.toString()
+                binding.txvDescripcion.text = producto.description
+            } else {
+                Log.w("Error", "Producto no encontrado")
+            }
         }
-
         binding.btnEditarProducto.setOnClickListener {
             val intent = Intent(this, AgregarProducto::class.java)
             intent.putExtra("productoId", productId)
@@ -50,16 +52,20 @@ class VerProducto : AppCompatActivity() {
         }
     }
 
-    fun findProduct(productId : Int):Producto?{
-        var producto : Producto? = Producto()
+    fun findProduct(productId: Int, onResult: (Producto?) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
+            var producto: Producto? = null
             try {
                 producto = productoDAO.buscarProductosPorId(productId)
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 Log.w("Error al buscar producto", e.toString())
             }
+
+            withContext(Dispatchers.Main) {
+                onResult(producto)
+            }
         }
-        return producto
     }
+
 
 }
