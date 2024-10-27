@@ -76,7 +76,7 @@ class AgregarProducto : AppCompatActivity() {
 
     private fun setupEditProductUI(productId: Int) {
         binding.txvTitulo.text = "Editar Producto"
-        binding.btnAgregar.text = "Editar"
+        binding.btnAgregar.text = "Grabar"
 
         buscarProducto(productId) { producto ->
             if (producto != null) {

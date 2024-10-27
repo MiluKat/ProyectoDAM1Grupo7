@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 data class Producto (
 
     @SerialName("id"          )
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id          : Int    = 0,
     @SerialName("title"       ) var title       : String? = null,
     @SerialName("price"       ) var price       : Double? = null,

@@ -38,9 +38,12 @@ class UserRoom : AppCompatActivity() {
         productoDAO = database.productoDAO()
 
         binding.rv.layoutManager = LinearLayoutManager(this)
-        adapter = ProductListAdapter(emptyList()) {
+        adapter = ProductListAdapter(emptyList(), {
             verInfo(it)
+        }){
+            deleteProducto(it)
         }
+
         binding.rv.adapter = adapter
 
         binding.btnCrear.setOnClickListener {
@@ -73,6 +76,16 @@ class UserRoom : AppCompatActivity() {
             startActivity(intent)
         }catch (e: Exception){
             Log.w("Erroe", e.toString())
+        }
+    }
+
+    fun deleteProducto(prodId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            var prod = Producto()
+            prod.id = prodId
+
+            productoDAO.delete(prod)
+            updateList()
         }
     }
 }
